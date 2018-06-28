@@ -94,3 +94,36 @@ class Blockchain(object):
         # We must make sure that the Dictionary is Ordered, or we'll have inconsistent hashes
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
+
+
+
+#Instantiate the Node
+app = Flask(_name_)
+
+#Generate a globally unique address for this node
+node_indetified = str(uuid4()).replace('-','')
+
+#Instatiate the Blockchain
+
+blockchain = Blockchain()
+
+@app.route('/mine', methods=['GET'])
+def mine():
+    return "We'll mine a new Block"
+
+@app.route('/transactions/new', methods=['POST'])
+def new_transaction():
+    return "We'll add a new transaction"
+
+@app.route('/chain', methods['GET'])
+def full_chain():
+    response = {
+        'chain' : blockchain.chain,
+        'length': len(blockchain.chain),
+    }
+
+    return jsonify(response), 200
+
+if _name_ == '_main_':
+    app.run(host='0.0.0.0', port=5000)
+
